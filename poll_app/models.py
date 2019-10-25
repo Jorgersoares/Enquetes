@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Max
 
 
 # Create your models here.
@@ -14,17 +15,14 @@ class Poll(models.Model):
         verbose_name = "Votação"
         verbose_name_plural = "Votações"
 
+    def get_result(self):
+        max_votes = Poll_questions.objects.filter(poll=self.id).aggregate(
+            Max('votos')
+        )['votos__max']
+        return Poll_questions.objects.filter(votos=max_votes, poll=self.id)
+
     def __str__(self):
         return self.nome
-
-    def get_vencedor(self):
-        questions = Poll_questions.objects.filter(poll=self.id)
-        lista = list()
-        vencedor_empate = []
-        for i in questions:
-            lista.append(questions.votos)
-        result_set = list(set(lista))
-
 
 
 class Poll_questions(models.Model):

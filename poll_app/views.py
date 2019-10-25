@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
-from .forms import VotoForm
 
 
 # Create your views here.
 def index(request):
+
     if request.method == 'POST':
         voto = request.POST['radio']
         question = Poll_questions.objects.get(id=voto)
@@ -13,6 +13,7 @@ def index(request):
             question.votos += 1
             question.save()
         return redirect('index')
+
     else:
         polls = Poll.objects.all()
         polls_questions = Poll_questions.objects.all()
@@ -24,4 +25,3 @@ def index(request):
                 'polls_questions': polls_questions,
             }
         )
-

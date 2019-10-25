@@ -25,54 +25,79 @@
     <div class="container">
         <div class="row justify-content-center mt-3">
             <div class="col-lg-8">
-                {% for poll in polls %}
-                    <div class="card">
-                        <h5 class="card-header">{{ poll.nome }}</h5>
-                        <div class="card-body">
-                            <form method="POST">
-                                {% csrf_token %}
+                {% if polls|length > 0 %}
+                    {% for poll in polls %}
+                        <div class="card mt-3">
+                            <h5 class="card-header">{{ poll.nome }}</h5>
+                            <div class="card-body">
+                                {% if poll.encerrada %}
+                                    <div class="alert alert-warning" role="alert">
+                                        Votação encerrada!
+                                    </div>
+                                {% endif %}
+                                <form method="POST">
+                                    {% csrf_token %}
 
-                                {% for questions in polls_questions %}
+                                    {% for questions in polls_questions %}
 
-                                    {% if questions.poll.id == poll.id %}
+                                        {% if questions.poll.id == poll.id %}
 
-                                        {% if poll.encerrada %}
+                                            {% if poll.encerrada %}
 
-                                            <div class="form-check disabled">
-                                                <input class="form-check-input" type="radio" value="{{ questions.id }}"
-                                                       name="radio" required disabled>
-                                                <label class="form-check-label">
-                                                    {{ questions.nome }}
-                                                </label>
-                                                <p>Votos: {{ questions.votos }}</p>
-                                            </div>
 
-                                        {% else %}
+                                                <div class="form-check disabled">
+                                                    <input class="form-check-input" type="radio"
+                                                           value="{{ questions.id }}"
+                                                           name="radio" required disabled>
+                                                    <label class="form-check-label">
+                                                        {{ questions.nome }}
+                                                    </label>
+                                                    <p>Votos: {{ questions.votos }}</p>
+                                                </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="radio" value="{{ questions.id }}"
-                                                       name="radio" required>
-                                                <label class="form-check-label">
-                                                    {{ questions.nome }}
-                                                </label>
-                                                <p>Votos: {{ questions.votos }}</p>
-                                            </div>
+
+
+                                            {% else %}
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio"
+                                                           value="{{ questions.id }}"
+                                                           name="radio" required>
+                                                    <label class="form-check-label">
+                                                        {{ questions.nome }}
+                                                    </label>
+                                                    <p>Votos: {{ questions.votos }}</p>
+                                                </div>
+
+
+                                            {% endif %}
 
                                         {% endif %}
-                                    
+
+                                    {% endfor %}
+
+                                    {% if poll.encerrada %}
+                                        {% if poll.get_result|length > 1 %}
+                                            <p>Esta votação terminou empatada!</p>
+                                        {% else %}
+                                            <p>Mais votado: {{ poll.get_result.get.nome }}</p>
+                                            <button type="submit" class="btn btn-primary disabled mt-3" disabled>Vote!
+                                            </button>
+                                        {% endif %}
+                                    {% else %}
+                                        <button type="submit" class="btn btn-primary mt-3">Vote!</button>
                                     {% endif %}
-                                
-                                {% endfor %}
-                                
-                                {% if poll.encerrada %}
-                                    <button type="submit" class="btn btn-primary disabled" mt-3" disabled>Vote!</button>
-                                {% else %}
-                                    <button type="submit" class="btn btn-primary disabled" mt-3">Vote!</button>
-                                {% endif %}
-                            </form>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h1 class="display-5">Não há votações em aberto:(</h1>
                         </div>
                     </div>
-                {% endfor %}
+                {% endif %}
             </div>
         </div>
     </div>
