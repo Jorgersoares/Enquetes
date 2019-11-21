@@ -20,6 +20,9 @@ class Poll(models.Model):
             Max('votos')
         )['votos__max']
         return Poll_questions.objects.filter(votos=max_votes, poll=self.id)
+    
+    def get_questions(self):
+        return Poll_questions.objects.filter(poll=self.id)
 
     def __str__(self):
         return self.nome

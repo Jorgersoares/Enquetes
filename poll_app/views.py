@@ -13,15 +13,13 @@ def index(request):
             question.votos += 1
             question.save()
         return redirect('index')
-
-    else:
-        polls = Poll.objects.all()
-        polls_questions = Poll_questions.objects.all()
-        return render(
-            request=request,
-            template_name='../templates/index.html',
-            context={
-                'polls': polls,
-                'polls_questions': polls_questions,
+    
+    polls = Poll.objects.all()
+    
+    return render(
+        request=request,
+        template_name='../templates/index.html',
+        context={
+            'polls': polls,
             }
         )
