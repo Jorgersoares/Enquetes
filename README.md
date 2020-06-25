@@ -1,7 +1,7 @@
 # poll_app
 ### Descrição
 Aplicação web que permite votar em enquetes variadas
-### Funcionalidades
+### Funcionalidades Futuras
 - Cadastro e login de usuários
 - Permitir qualquer usuário criar e compartilhar enquetes
 ### Tecnologia utilizada
