@@ -1,4 +1,4 @@
-# poll_app
+# Enquetes
 ### Descrição
 Aplicação web que permite votar em enquetes variadas
 ### Funcionalidades Futuras
